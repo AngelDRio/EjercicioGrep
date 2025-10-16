@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class EjemploGrep {
 
@@ -21,7 +23,8 @@ public class EjemploGrep {
     public static void main(String[] args) throws IOException, InterruptedException {
         Process proceso = Runtime.getRuntime().exec(COMANDO_GREP);
         escribirEntrada(proceso);
-        leerSalida(proceso);
+        List<String> resultadoSalida = leerSalida(proceso);
+        System.out.println(resultadoSalida);
     }
 
     //Escribe las líneas definidas en la constante en la entrada del proceso
@@ -31,16 +34,16 @@ public class EjemploGrep {
                 pw.println(linea);
             }
             pw.flush();
-        
     }
 
     //Lee la salida del proceso (las líneas que contienen “psp”)
-    private static void leerSalida(Process proceso) throws IOException {
+    private static List<String> leerSalida(Process proceso) throws IOException {
+        List<String> salida = new ArrayList<>();
         BufferedReader br = new BufferedReader(new InputStreamReader(proceso.getInputStream()));
-            String salida;
-            while ((salida = br.readLine()) != null) {
-                System.out.println(salida);
+            String linea;
+            while ((linea = br.readLine()) != null) {
+                salida.add(linea);
             }
-        
+            return salida;
     }
 }
