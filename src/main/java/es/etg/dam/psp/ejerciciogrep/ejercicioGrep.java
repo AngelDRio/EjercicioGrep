@@ -5,10 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 
-public class EjemploGrep {
+public class ejercicioGrep {
 
     private static final String[] COMANDO_GREP = {"grep", "-i", "psp"};
 
@@ -22,8 +20,10 @@ public class EjemploGrep {
 
     public static void main(String[] args) throws IOException, InterruptedException {
         Process proceso = Runtime.getRuntime().exec(COMANDO_GREP);
+
         escribirEntrada(proceso);
-        List<String> resultadoSalida = leerSalida(proceso);
+        
+        String resultadoSalida = leerSalida(proceso);
         System.out.println(resultadoSalida);
     }
 
@@ -33,17 +33,18 @@ public class EjemploGrep {
             for (String linea : LINEASTEXTO) {
                 pw.println(linea);
             }
-            pw.flush();
+            pw.close();
     }
 
     //Lee la salida del proceso (las líneas que contienen “psp”)
-    private static List<String> leerSalida(Process proceso) throws IOException {
-        List<String> salida = new ArrayList<>();
+    private static String leerSalida(Process proceso) throws IOException {
+        String salida = "";
         BufferedReader br = new BufferedReader(new InputStreamReader(proceso.getInputStream()));
             String linea;
             while ((linea = br.readLine()) != null) {
-                salida.add(linea);
+                salida += linea + "\n";
             }
+            br.close();
             return salida;
     }
 }
